@@ -18,6 +18,14 @@ module Legion
         include Aggregate::Runners::Aggregate
         include User::Runners::User
         include UserGroup::Runners::UserGroup
+        include Request::Runners::Request
+        include Approval::Runners::Approval
+        include Task::Runners::Task
+        include Sla::Runners::Sla
+        include ImportSet::Runners::ImportSet
+        include Event::Runners::Event
+        include PerformanceAnalytics::Runners::PerformanceAnalytics
+        include Flow::Runners::Flow
 
         attr_reader :opts
 
