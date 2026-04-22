@@ -11,6 +11,13 @@ module Legion
         include Knowledge::Runners::Knowledge
         include ServiceCatalog::Runners::ServiceCatalog
         include Account::Runners::Account
+        include Incident::Runners::Incident
+        include Problem::Runners::Problem
+        include Attachment::Runners::Attachment
+        include Table::Runners::Table
+        include Aggregate::Runners::Aggregate
+        include User::Runners::User
+        include UserGroup::Runners::UserGroup
 
         attr_reader :opts
 

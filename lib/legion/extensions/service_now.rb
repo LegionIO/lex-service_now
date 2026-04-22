@@ -9,6 +9,13 @@ require 'legion/extensions/service_now/cmdb/meta/runners/meta'
 require 'legion/extensions/service_now/knowledge/runners/knowledge'
 require 'legion/extensions/service_now/service_catalog/runners/service_catalog'
 require 'legion/extensions/service_now/account/runners/account'
+require 'legion/extensions/service_now/incident/runners/incident'
+require 'legion/extensions/service_now/problem/runners/problem'
+require 'legion/extensions/service_now/attachment/runners/attachment'
+require 'legion/extensions/service_now/table/runners/table'
+require 'legion/extensions/service_now/aggregate/runners/aggregate'
+require 'legion/extensions/service_now/user/runners/user'
+require 'legion/extensions/service_now/user_group/runners/user_group'
 
 require 'legion/extensions/service_now/client'
 
