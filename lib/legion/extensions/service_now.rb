@@ -58,6 +58,11 @@ if defined?(Legion::LLM)
   require 'legion/extensions/service_now/skills/cmdb_query'
   require 'legion/extensions/service_now/skills/knowledge'
   require 'legion/extensions/service_now/skills/service_catalog'
+  require 'legion/extensions/service_now/skills/problem_management'
+  require 'legion/extensions/service_now/skills/request_fulfillment'
+  require 'legion/extensions/service_now/skills/approval_workflow'
+  require 'legion/extensions/service_now/skills/asset_management'
+  require 'legion/extensions/service_now/skills/security_incident_response'
 end
 
 module Legion
