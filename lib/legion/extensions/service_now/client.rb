@@ -26,6 +26,31 @@ module Legion
         include Event::Runners::Event
         include PerformanceAnalytics::Runners::PerformanceAnalytics
         include Flow::Runners::Flow
+        include Notification::Runners::Notification
+        include EmailLog::Runners::EmailLog
+        include Audit::Runners::Audit
+        include SystemProperty::Runners::SystemProperty
+        include Asset::Runners::Asset
+        include Location::Runners::Location
+        include Department::Runners::Department
+        include Company::Runners::Company
+        include Project::Runners::Project
+        include Release::Runners::Release
+        include HrCase::Runners::HrCase
+        include SecurityIncident::Runners::SecurityIncident
+        include UpdateSet::Runners::UpdateSet
+        include ScriptInclude::Runners::ScriptInclude
+        include BusinessRule::Runners::BusinessRule
+        include ScheduledJob::Runners::ScheduledJob
+        include OnCall::Runners::OnCall
+        include Survey::Runners::Survey
+        include Contract::Runners::Contract
+        include CostCenter::Runners::CostCenter
+        include WorkOrder::Runners::WorkOrder
+        include Discovery::Runners::Discovery
+        include MidServer::Runners::MidServer
+        include CatalogVariable::Runners::CatalogVariable
+        include Workflow::Runners::Workflow
 
         attr_reader :opts
 
