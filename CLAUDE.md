@@ -6,9 +6,9 @@
 
 ## Purpose
 
-Comprehensive Legion Extension connecting LegionIO to ServiceNow via REST APIs. Covers 46 domains spanning ITSM, ITOM, ITAM, HR, Security, DevOps, and platform administration.
+Comprehensive Legion Extension connecting LegionIO to ServiceNow via REST APIs. Covers **66 domains** and **346 methods** spanning ITSM, ITOM, ITAM, HR, Security, GRC, CSM, DevOps, and platform administration.
 
-**Version**: 0.2.0
+**Version**: 0.3.0
 **GitHub**: https://github.com/LegionIO/lex-service_now
 **License**: MIT
 
@@ -16,105 +16,133 @@ Comprehensive Legion Extension connecting LegionIO to ServiceNow via REST APIs. 
 
 ```
 Legion::Extensions::ServiceNow
++-- Errors                              # AuthenticationError, AuthorizationError,
+|                                       # NotFoundError, UnprocessableError,
+|                                       # RateLimitError, ServerError
 +-- Helpers/
-|   +-- Client             # connection() with OAuth2→Bearer→Basic auth priority fallback
+|   +-- Client          # connection() with OAuth2→Bearer→Basic fallback
+|   |                   # handle_response() raises typed errors on non-2xx
+|   +-- Pagination      # paginate(method, **opts) auto-fetches all pages
+|   +-- Retry           # with_retry(max_retries:) retries on rate limit/server errors
 +-- ITSM/
-|   +-- Change::Runners::Change          (14 methods) — normal/emergency/standard + tasks/conflicts/approvals
-|   +-- Incident::Runners::Incident      (6 methods)  — CRUD + resolve
-|   +-- Problem::Runners::Problem        (6 methods)  — CRUD + close
-|   +-- Request::Runners::Request        (6 methods)  — sc_request + sc_req_item
-|   +-- Approval::Runners::Approval      (5 methods)  — approve/reject + list_for_record
-|   +-- Task::Runners::Task              (5 methods)  — CRUD + add_work_note
-|   +-- Sla::Runners::Sla               (5 methods)  — definitions + task SLAs
+|   +-- Change          (14) — normal/emergency/standard + change_tasks/conflicts/approvals
+|   +-- Incident         (6) — CRUD + resolve
+|   +-- Problem          (6) — CRUD + close
+|   +-- Request          (6) — sc_request + sc_req_item
+|   +-- Approval         (5) — approve/reject + list_for_record
+|   +-- Task             (5) — CRUD + add_work_note
+|   +-- Sla              (5) — definitions + task SLAs
+|   +-- CatalogTask       (4) — sc_task list/get/update/close
 +-- CMDB/
-|   +-- Cmdb::Instance::Runners::Instance  (7 methods)  — CI CRUD + relationships
-|   +-- Cmdb::Meta::Runners::Meta          (2 methods)  — hierarchy + class metadata
-+-- Knowledge/
-|   +-- Knowledge::Runners::Knowledge      (5 methods)  — article CRUD
+|   +-- Cmdb::Instance   (7) — CI CRUD + relationships
+|   +-- Cmdb::Meta        (2) — hierarchy + class metadata
+|   +-- CiRelationship    (5) — cmdb_rel_type + cmdb_rel_ci
+|   +-- CmdbHealth        (4) — duplicates, stale CIs, health dashboard
 +-- ServiceCatalog/
-|   +-- ServiceCatalog::Runners::ServiceCatalog  (11 methods) — catalogs/items/cart/order
-|   +-- CatalogVariable::Runners::CatalogVariable (5 methods) — item variables CRUD
-+-- User Management/
-|   +-- User::Runners::User              (7 methods)  — CRUD + lookup_by_username/email
-|   +-- UserGroup::Runners::UserGroup    (9 methods)  — CRUD + member management
-|   +-- Account::Runners::Account        (4 methods)  — core account CRUD
-+-- Assets/
-|   +-- Asset::Runners::Asset            (6 methods)  — alm_asset CRUD + hardware
-|   +-- Contract::Runners::Contract      (5 methods)  — ast_contract CRUD
+|   +-- ServiceCatalog   (11) — catalogs/items/cart/order
+|   +-- CatalogVariable   (5) — item_option_new CRUD
++-- Knowledge/
+|   +-- Knowledge         (5) — article CRUD
+|   +-- KnowledgeBase     (6) — kb_knowledge_base CRUD + categories
+|   +-- KnowledgeFeedback (4) — feedback + views
++-- UserManagement/
+|   +-- User              (7) — CRUD + lookup_by_username/email
+|   +-- UserGroup         (9) — CRUD + member management
+|   +-- Account           (4) — account CRUD
 +-- Organization/
-|   +-- Location::Runners::Location      (5 methods)  — cmn_location CRUD
-|   +-- Department::Runners::Department  (5 methods)  — cmn_department CRUD
-|   +-- Company::Runners::Company        (5 methods)  — core_company CRUD
-|   +-- CostCenter::Runners::CostCenter  (5 methods)  — cmn_cost_center CRUD
-+-- Project & Release/
-|   +-- Project::Runners::Project        (6 methods)  — pm_project CRUD + tasks
-|   +-- Release::Runners::Release        (5 methods)  — rm_release CRUD
+|   +-- Location          (5) — cmn_location CRUD
+|   +-- Department        (5) — cmn_department CRUD
+|   +-- Company           (5) — core_company CRUD
+|   +-- CostCenter        (5) — cmn_cost_center CRUD
+|   +-- Vendor            (5) — vendor-filtered company records
++-- Assets/
+|   +-- Asset             (6) — alm_asset CRUD + hardware
+|   +-- Contract          (5) — ast_contract CRUD
+|   +-- License           (4) — agreements + allocations + installed software
 +-- Security/
-|   +-- SecurityIncident::Runners::SecurityIncident  (5 methods) — sn_si_incident CRUD
+|   +-- SecurityIncident  (5) — sn_si_incident CRUD
+|   +-- AccessControl     (5) — sys_security_acl CRUD
+|   +-- Grc               (7) — risks + controls + audits + policies
 +-- HR/
-|   +-- HrCase::Runners::HrCase          (5 methods)  — sn_hr_core_case CRUD
-+-- Platform Admin/
-|   +-- SystemProperty::Runners::SystemProperty  (6 methods) — sys_properties CRUD
-|   +-- UpdateSet::Runners::UpdateSet    (6 methods)  — CRUD + list changes
-|   +-- ScriptInclude::Runners::ScriptInclude  (5 methods)  — sys_script_include CRUD
-|   +-- BusinessRule::Runners::BusinessRule    (5 methods)  — sys_script CRUD
-|   +-- ScheduledJob::Runners::ScheduledJob    (5 methods)  — sysauto_script CRUD
-|   +-- Workflow::Runners::Workflow       (6 methods)  — wf_workflow + contexts
-|   +-- Flow::Runners::Flow              (6 methods)  — sn_fd flow execute + subflows
-|   +-- Audit::Runners::Audit            (3 methods)  — sys_audit + field changes
+|   +-- HrCase            (5) — sn_hr_core_case CRUD
++-- CustomerService/
+|   +-- Csm               (6) — customer cases + contacts
++-- ProjectRelease/
+|   +-- Project           (6) — pm_project CRUD + tasks
+|   +-- Release           (5) — rm_release CRUD
++-- PlatformAdmin/
+|   +-- SystemProperty    (6) — sys_properties CRUD
+|   +-- UpdateSet         (6) — CRUD + list changes
+|   +-- ScriptInclude     (5) — sys_script_include CRUD
+|   +-- BusinessRule      (5) — sys_script CRUD
+|   +-- ScriptAction      (5) — sysevent_script_action CRUD
+|   +-- ScheduledJob      (5) — sysauto_script CRUD
+|   +-- UiPolicy          (5) — sys_ui_policy CRUD
+|   +-- UiAction          (5) — sys_ui_action CRUD
+|   +-- Workflow          (6) — wf_workflow + contexts
+|   +-- Flow              (6) — sn_fd flows + subflows
+|   +-- Audit             (3) — sys_audit + field changes
+|   +-- DeprecationLog    (4) — upgrade history + deprecation log
 +-- ITOM/
-|   +-- Discovery::Runners::Discovery    (5 methods)  — schedules/logs/devices
-|   +-- MidServer::Runners::MidServer    (5 methods)  — ecc_agent CRUD + capabilities
-|   +-- Event::Runners::Event            (3 methods)  — sysevent CRUD
+|   +-- Discovery         (5) — schedules/logs/devices
+|   +-- MidServer         (5) — ecc_agent CRUD + capabilities
+|   +-- Event             (3) — sysevent CRUD
 +-- Analytics/
-|   +-- PerformanceAnalytics::Runners::PerformanceAnalytics  (5 methods) — widgets/scorecards/indicators
-|   +-- Aggregate::Runners::Aggregate    (1 method)   — stats queries on any table
+|   +-- PerformanceAnalytics (5) — widgets/scorecards/indicators
+|   +-- Metric             (4) — definitions + instances
 +-- Comms/
-|   +-- Notification::Runners::Notification  (5 methods) — sysevent_email_action CRUD
-|   +-- EmailLog::Runners::EmailLog      (3 methods)  — sys_email list/get/list_for_record
-+-- Field Service/
-|   +-- WorkOrder::Runners::WorkOrder    (6 methods)  — wm_order CRUD + tasks + close
-|   +-- OnCall::Runners::OnCall          (5 methods)  — cmn_rota + members + who_is_on_call
+|   +-- Notification       (5) — sysevent_email_action CRUD
+|   +-- EmailLog           (3) — sys_email list/get/list_for_record
++-- FieldService/
+|   +-- WorkOrder          (6) — wm_order CRUD + tasks + close
+|   +-- OnCall             (5) — schedules + members + who_is_on_call
++-- PlatformModules/
+|   +-- ServicePortal      (6) — portals/pages/widgets
+|   +-- IntegrationHub     (5) — spokes/connections/credentials
 +-- Utilities/
-|   +-- Table::Runners::Table            (5 methods)  — generic CRUD on any table
-|   +-- ImportSet::Runners::ImportSet    (2 methods)  — /api/now/import
-|   +-- Survey::Runners::Survey          (5 methods)  — assessments + instances + responses
+|   +-- Table              (5) — generic CRUD on any table
+|   +-- ImportSet          (2) — /api/now/import
+|   +-- Aggregate          (1) — stats queries on any table
+|   +-- Attachment         (5) — upload/download files
+|   +-- Survey             (5) — assessments + instances + responses
+|   +-- Tag                (7) — label + label_entry CRUD
+|   +-- Currency           (3) — fx_currency + fx_rate
+|   +-- Calendar           (6) — cmn_schedule CRUD + entries
 +-- Skills/ (loaded only if legion-llm available)
 |   +-- Incident, ChangeRequest, CmdbQuery, Knowledge, ServiceCatalog
 |   +-- ProblemManagement, RequestFulfillment, ApprovalWorkflow
 |   +-- AssetManagement, SecurityIncidentResponse
-+-- Client                 # Standalone client class including all 46 runners
++-- Client                 # includes all 66 runners + helpers
 ```
+
+## Known Method Name Notes
+
+- Change runner task methods are named `list_change_tasks`, `create_change_task`, `update_change_task`, `delete_change_task` to avoid collision with the generic Task runner's `list_tasks`/`update_task`.
 
 ## Authentication
 
-`Helpers::Client#connection` selects auth priority order (most secure first):
-1. **OAuth2** — `client_id` + `client_secret` → client credentials grant → `/oauth_token.do`, token memoized in `@fetch_oauth2_token`
+Priority order (most secure wins):
+1. **OAuth2** — `client_id` + `client_secret` → `/oauth_token.do` → memoized in `@fetch_oauth2_token`
 2. **Bearer** — `token` → `Authorization: Bearer <token>`
-3. **Basic Auth** — `username` + `password` → HTTP Basic
+3. **Basic Auth** — `username` + `password`
 
-Instance URL defaults to `Legion::Settings[:service_now][:url]`, overridable per `Client.new` or per call.
+URL defaults to `Legion::Settings[:service_now][:url]`, overridable per call or `Client.new`.
 
-## Standalone Client
+## Helpers
 
+### Pagination
 ```ruby
-client = Legion::Extensions::ServiceNow::Client.new(
-  url: 'https://your-instance.service-now.com',
-  username: 'svc_account',
-  password: 'secret'
-)
-
-# Or with OAuth2
-client = Legion::Extensions::ServiceNow::Client.new(
-  url: 'https://your-instance.service-now.com',
-  client_id: 'abc',
-  client_secret: 'xyz'
-)
-
-client.list_incidents(sysparm_query: 'state=1', sysparm_limit: 50)
-client.create_change(short_description: 'Deploy v2.0')
-client.get_ci(class_name: 'cmdb_ci_server', sys_id: 'abc123')
+all = client.paginate(:list_incidents, sysparm_query: 'state=1')
 ```
+
+### Retry
+```ruby
+client.with_retry(max_retries: 3) { client.create_incident(...) }
+```
+Retries on `RateLimitError` (exponential backoff) and `ServerError`. Does not retry auth errors.
+
+### Error Handling
+`handle_response` is called automatically; raises typed `Errors::*` on non-2xx. Errors carry `.status` and `.detail`.
 
 ## Settings
 
@@ -138,20 +166,20 @@ client.get_ci(class_name: 'cmdb_ci_server', sys_id: 'abc123')
 | `faraday >= 2.0` | HTTP client |
 | `faraday-multipart >= 1.0` | Multipart upload for attachments |
 | `legion-settings >= 1.3.14` | Settings/config |
-| `legion-logging >= 1.3.2` | Structured logging |
+| `legion-logging >= 1.3.2` | Logging |
 | `legion-cache >= 1.3.11` | Caching |
 | `legion-crypt >= 1.4.9` | Credential encryption |
 | `legion-data >= 1.4.17` | ORM |
 | `legion-json >= 1.2.1` | JSON helpers |
 | `legion-transport >= 1.3.9` | AMQP transport |
 
-`legion-llm` is an optional soft dependency — skills load only if defined.
+`legion-llm` is optional — skills load only if defined.
 
 ## Development
 
 ```bash
 bundle install
-bundle exec rspec          # 217+ examples, 0 failures
+bundle exec rspec          # 372 examples, 0 failures
 bundle exec rubocop        # 0 offenses
 ```
 
