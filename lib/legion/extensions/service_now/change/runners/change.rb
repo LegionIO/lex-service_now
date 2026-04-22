@@ -65,18 +65,18 @@ module Legion
               { deleted: resp.status == 204, id: id }
             end
 
-            def list_tasks(id:, **)
+            def list_change_tasks(id:, **)
               resp = connection(**).get("/api/sn_chg_rest/change/#{id}/task")
               { tasks: resp.body['result'] }
             end
 
-            def create_task(id:, short_description:, **)
+            def create_change_task(id:, short_description:, **)
               body = { short_description: short_description }
               resp = connection(**).post("/api/sn_chg_rest/change/#{id}/task", body)
               { task: resp.body['result'] }
             end
 
-            def update_task(id:, task_id:, short_description: nil, state: nil, assigned_to: nil, **)
+            def update_change_task(id:, task_id:, short_description: nil, state: nil, assigned_to: nil, **)
               body = {}
               body[:short_description] = short_description if short_description
               body[:state]             = state if state
@@ -85,7 +85,7 @@ module Legion
               { task: resp.body['result'] }
             end
 
-            def delete_task(id:, task_id:, **)
+            def delete_change_task(id:, task_id:, **)
               resp = connection(**).delete("/api/sn_chg_rest/change/#{id}/task/#{task_id}")
               { deleted: resp.status == 204, task_id: task_id }
             end

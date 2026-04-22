@@ -77,39 +77,39 @@ RSpec.describe Legion::Extensions::ServiceNow::Change::Runners::Change do
     end
   end
 
-  describe '#list_tasks' do
+  describe '#list_change_tasks' do
     it 'returns tasks for a change' do
       @stubs.get('/api/sn_chg_rest/change/abc/task') do
         [200, { 'Content-Type' => 'application/json' }, { 'result' => [{ 'sys_id' => 't1' }] }]
       end
-      expect(@instance.list_tasks(id: 'abc')[:tasks]).to be_an(Array)
+      expect(@instance.list_change_tasks(id: 'abc')[:tasks]).to be_an(Array)
     end
   end
 
-  describe '#create_task' do
+  describe '#create_change_task' do
     it 'creates a task on a change' do
       @stubs.post('/api/sn_chg_rest/change/abc/task') do
         [201, { 'Content-Type' => 'application/json' },
          { 'result' => { 'sys_id' => 't1', 'short_description' => 'Test task' } }]
       end
-      expect(@instance.create_task(id: 'abc', short_description: 'Test task')[:task]['sys_id']).to eq('t1')
+      expect(@instance.create_change_task(id: 'abc', short_description: 'Test task')[:task]['sys_id']).to eq('t1')
     end
   end
 
-  describe '#update_task' do
+  describe '#update_change_task' do
     it 'updates a task' do
       @stubs.patch('/api/sn_chg_rest/change/abc/task/t1') do
         [200, { 'Content-Type' => 'application/json' },
          { 'result' => { 'sys_id' => 't1', 'state' => 'closed' } }]
       end
-      expect(@instance.update_task(id: 'abc', task_id: 't1', state: 'closed')[:task]['state']).to eq('closed')
+      expect(@instance.update_change_task(id: 'abc', task_id: 't1', state: 'closed')[:task]['state']).to eq('closed')
     end
   end
 
-  describe '#delete_task' do
+  describe '#delete_change_task' do
     it 'returns deleted true on 204' do
       @stubs.delete('/api/sn_chg_rest/change/abc/task/t1') { [204, {}, nil] }
-      expect(@instance.delete_task(id: 'abc', task_id: 't1')[:deleted]).to be true
+      expect(@instance.delete_change_task(id: 'abc', task_id: 't1')[:deleted]).to be true
     end
   end
 
