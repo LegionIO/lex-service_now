@@ -53,6 +53,14 @@ module Legion
         include MidServer::Runners::MidServer
         include CatalogVariable::Runners::CatalogVariable
         include Workflow::Runners::Workflow
+        include Vendor::Runners::Vendor
+        include CiRelationship::Runners::CiRelationship
+        include ScriptAction::Runners::ScriptAction
+        include UiPolicy::Runners::UiPolicy
+        include UiAction::Runners::UiAction
+        include AccessControl::Runners::AccessControl
+        include CatalogTask::Runners::CatalogTask
+        include KnowledgeBase::Runners::KnowledgeBase
 
         attr_reader :opts
 
