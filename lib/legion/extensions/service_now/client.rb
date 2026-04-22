@@ -61,6 +61,14 @@ module Legion
         include AccessControl::Runners::AccessControl
         include CatalogTask::Runners::CatalogTask
         include KnowledgeBase::Runners::KnowledgeBase
+        include Tag::Runners::Tag
+        include Metric::Runners::Metric
+        include Currency::Runners::Currency
+        include Calendar::Runners::Calendar
+        include KnowledgeFeedback::Runners::KnowledgeFeedback
+        include License::Runners::License
+        include DeprecationLog::Runners::DeprecationLog
+        include CmdbHealth::Runners::CmdbHealth
 
         attr_reader :opts
 
