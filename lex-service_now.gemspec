@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['matthewdiverson@gmail.com']
 
   spec.summary       = 'LEX::ServiceNow'
-  spec.description   = 'Connects Legion to ServiceNow via Change Management, CMDB, Knowledge, Service Catalog, and Account REST APIs'
+  spec.description   = 'Connects Legion to ServiceNow via 60+ REST API domains spanning ITSM, ITOM, ITAM, HR, Security, DevOps, and platform administration'
   spec.homepage      = 'https://github.com/LegionIO/lex-service_now'
   spec.license       = 'MIT'
   spec.required_ruby_version = '>= 3.4'

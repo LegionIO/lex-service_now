@@ -69,6 +69,10 @@ module Legion
         include License::Runners::License
         include DeprecationLog::Runners::DeprecationLog
         include CmdbHealth::Runners::CmdbHealth
+        include ServicePortal::Runners::ServicePortal
+        include Grc::Runners::Grc
+        include Csm::Runners::Csm
+        include IntegrationHub::Runners::IntegrationHub
 
         attr_reader :opts
 

@@ -68,6 +68,10 @@ require 'legion/extensions/service_now/knowledge_feedback/runners/knowledge_feed
 require 'legion/extensions/service_now/license/runners/license'
 require 'legion/extensions/service_now/deprecation_log/runners/deprecation_log'
 require 'legion/extensions/service_now/cmdb_health/runners/cmdb_health'
+require 'legion/extensions/service_now/service_portal/runners/service_portal'
+require 'legion/extensions/service_now/grc/runners/grc'
+require 'legion/extensions/service_now/csm/runners/csm'
+require 'legion/extensions/service_now/integration_hub/runners/integration_hub'
 
 require 'legion/extensions/service_now/client'
 
