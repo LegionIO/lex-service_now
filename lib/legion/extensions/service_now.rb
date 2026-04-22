@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require 'legion/extensions/service_now/version'
+require 'legion/extensions/service_now/errors'
 require 'legion/extensions/service_now/helpers/client'
+require 'legion/extensions/service_now/helpers/pagination'
+require 'legion/extensions/service_now/helpers/retry'
 
 require 'legion/extensions/service_now/change/runners/change'
 require 'legion/extensions/service_now/cmdb/instance/runners/instance'

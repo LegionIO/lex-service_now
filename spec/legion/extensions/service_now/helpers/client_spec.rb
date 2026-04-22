@@ -37,4 +37,77 @@ RSpec.describe Legion::Extensions::ServiceNow::Helpers::Client do
       expect(conn.headers['Authorization']).to eq('Bearer oauth-token')
     end
   end
+
+  describe '#handle_response' do
+    def mock_resp(status, body = {})
+      double('response', status: status, body: body)
+    end
+
+    it 'returns response on 200' do
+      resp = mock_resp(200, { 'result' => [] })
+      expect(obj.handle_response(resp)).to eq(resp)
+    end
+
+    it 'returns response on 201' do
+      resp = mock_resp(201, { 'result' => {} })
+      expect(obj.handle_response(resp)).to eq(resp)
+    end
+
+    it 'returns response on 204' do
+      resp = mock_resp(204, nil)
+      expect(obj.handle_response(resp)).to eq(resp)
+    end
+
+    it 'raises AuthenticationError on 401' do
+      resp = mock_resp(401, { 'error' => { 'message' => 'Not authenticated' } })
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::AuthenticationError)
+    end
+
+    it 'raises AuthorizationError on 403' do
+      resp = mock_resp(403, { 'error' => { 'message' => 'Forbidden' } })
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::AuthorizationError)
+    end
+
+    it 'raises NotFoundError on 404' do
+      resp = mock_resp(404, { 'error' => { 'message' => 'Not found' } })
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::NotFoundError)
+    end
+
+    it 'raises UnprocessableError on 422' do
+      resp = mock_resp(422, { 'error' => { 'message' => 'Invalid' } })
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::UnprocessableError)
+    end
+
+    it 'raises RateLimitError on 429' do
+      resp = mock_resp(429, { 'error' => { 'message' => 'Too many requests' } })
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::RateLimitError)
+    end
+
+    it 'raises ServerError on 500' do
+      resp = mock_resp(500, { 'error' => { 'message' => 'Internal server error' } })
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::ServerError)
+    end
+
+    it 'raises ServerError on 503' do
+      resp = mock_resp(503, { 'error' => { 'message' => 'Service unavailable' } })
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::ServerError)
+    end
+
+    it 'includes status in the error' do
+      resp = mock_resp(404, { 'error' => { 'message' => 'Record not found' } })
+      begin
+        obj.handle_response(resp)
+      rescue Legion::Extensions::ServiceNow::Errors::NotFoundError => e
+        expect(e.status).to eq(404)
+        expect(e.message).to eq('Record not found')
+      end
+    end
+
+    it 'handles non-hash body gracefully' do
+      resp = mock_resp(500, 'Internal Server Error')
+      expect { obj.handle_response(resp) }.to raise_error(Legion::Extensions::ServiceNow::Errors::ServerError) do |e|
+        expect(e.message).to match(/ServiceNow error/)
+      end
+    end
+  end
 end

@@ -38,6 +38,38 @@ module Legion
               resp.body['access_token']
             end
           end
+
+          def handle_response(resp)
+            case resp.status
+            when 200, 201, 202, 204
+              resp
+            when 401
+              raise Errors::AuthenticationError.new(error_message(resp), status: 401, detail: resp.body)
+            when 403
+              raise Errors::AuthorizationError.new(error_message(resp), status: 403, detail: resp.body)
+            when 404
+              raise Errors::NotFoundError.new(error_message(resp), status: 404, detail: resp.body)
+            when 422
+              raise Errors::UnprocessableError.new(error_message(resp), status: 422, detail: resp.body)
+            when 429
+              raise Errors::RateLimitError.new(error_message(resp), status: 429, detail: resp.body)
+            when 500..599
+              raise Errors::ServerError.new(error_message(resp), status: resp.status, detail: resp.body)
+            else
+              raise Errors::ServiceNowError.new(error_message(resp), status: resp.status, detail: resp.body)
+            end
+          end
+
+          private
+
+          def error_message(resp)
+            body = resp.body
+            return "ServiceNow error (#{resp.status})" unless body.is_a?(Hash)
+
+            msg = body.dig('error', 'message') || body.dig('error', 'detail') ||
+                  body['error'] || body['message'] || "ServiceNow error (#{resp.status})"
+            msg.to_s
+          end
         end
       end
     end

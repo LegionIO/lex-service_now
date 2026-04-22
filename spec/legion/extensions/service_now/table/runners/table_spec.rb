@@ -30,6 +30,39 @@ RSpec.describe Legion::Extensions::ServiceNow::Table::Runners::Table do
     end
   end
 
+  describe '#table_create' do
+    it 'creates a record in the specified table' do
+      @stubs.post('/api/now/table/u_custom_table') do
+        [201, { 'Content-Type' => 'application/json' },
+         { 'result' => { 'sys_id' => 'r2', 'name' => 'new record' } }]
+      end
+      result = @instance.table_create(table_name: 'u_custom_table', name: 'new record')
+      expect(result[:record]['sys_id']).to eq('r2')
+    end
+
+    it 'does not pass auth fields as body params' do
+      posted_body = nil
+      @stubs.post('/api/now/table/u_custom_table') do |env|
+        posted_body = JSON.parse(env.body)
+        [201, { 'Content-Type' => 'application/json' }, { 'result' => { 'sys_id' => 'r3' } }]
+      end
+      @instance.table_create(table_name: 'u_custom_table', name: 'test', username: 'admin', password: 'secret')
+      expect(posted_body.keys).not_to include('username', 'password')
+      expect(posted_body['name']).to eq('test')
+    end
+  end
+
+  describe '#table_update' do
+    it 'updates a record in the specified table' do
+      @stubs.patch('/api/now/table/u_custom_table/r1') do
+        [200, { 'Content-Type' => 'application/json' },
+         { 'result' => { 'sys_id' => 'r1', 'name' => 'updated' } }]
+      end
+      result = @instance.table_update(table_name: 'u_custom_table', sys_id: 'r1', name: 'updated')
+      expect(result[:record]['name']).to eq('updated')
+    end
+  end
+
   describe '#table_delete' do
     it 'returns deleted true on 204' do
       @stubs.delete('/api/now/table/u_custom_table/r1') { [204, {}, nil] }

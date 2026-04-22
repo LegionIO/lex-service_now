@@ -30,12 +30,14 @@ module Legion
             end
 
             def table_create(table_name:, **fields)
-              resp = connection(**fields).post("/api/now/table/#{table_name}", fields)
+              body = fields.except(:url, :client_id, :client_secret, :token, :username, :password)
+              resp = connection(**fields).post("/api/now/table/#{table_name}", body)
               { record: resp.body['result'] }
             end
 
             def table_update(table_name:, sys_id:, **fields)
-              resp = connection(**fields).patch("/api/now/table/#{table_name}/#{sys_id}", fields)
+              body = fields.except(:url, :client_id, :client_secret, :token, :username, :password, :sys_id)
+              resp = connection(**fields).patch("/api/now/table/#{table_name}/#{sys_id}", body)
               { record: resp.body['result'] }
             end
 

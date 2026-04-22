@@ -5,6 +5,8 @@ module Legion
     module ServiceNow
       class Client
         include Helpers::Client
+        include Helpers::Pagination
+        include Helpers::Retry
         include Change::Runners::Change
         include Cmdb::Instance::Runners::Instance
         include Cmdb::Meta::Runners::Meta
