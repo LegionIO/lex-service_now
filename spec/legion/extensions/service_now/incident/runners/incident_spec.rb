@@ -68,4 +68,44 @@ RSpec.describe Legion::Extensions::ServiceNow::Incident::Runners::Incident do
       expect(@instance.delete_incident(sys_id: 'i1')[:deleted]).to be true
     end
   end
+
+  describe 'error handling' do
+    it 'raises NotFoundError on 404' do
+      @stubs.get('/api/now/table/incident/bad') do
+        [404, { 'Content-Type' => 'application/json' },
+         { 'error'  => { 'message' => 'No Record found', 'detail' => 'Record does not exist' },
+           'status' => 'failure' }]
+      end
+      expect { @instance.get_incident(sys_id: 'bad') }
+        .to raise_error(Legion::Extensions::ServiceNow::Errors::NotFoundError)
+    end
+
+    it 'raises AuthenticationError on 401' do
+      @stubs.get('/api/now/table/incident/i1') do
+        [401, { 'Content-Type' => 'application/json' },
+         { 'error'  => { 'message' => 'User Not Authenticated', 'detail' => 'Required to provide Auth information' },
+           'status' => 'failure' }]
+      end
+      expect { @instance.get_incident(sys_id: 'i1') }
+        .to raise_error(Legion::Extensions::ServiceNow::Errors::AuthenticationError)
+    end
+
+    it 'raises ServerError on 500' do
+      @stubs.post('/api/now/table/incident') do
+        [500, { 'Content-Type' => 'application/json' },
+         { 'error' => { 'message' => 'Internal Server Error' }, 'status' => 'failure' }]
+      end
+      expect { @instance.create_incident(short_description: 'Test') }
+        .to raise_error(Legion::Extensions::ServiceNow::Errors::ServerError)
+    end
+
+    it 'raises RateLimitError on 429' do
+      @stubs.get('/api/now/table/incident') do
+        [429, { 'Content-Type' => 'application/json' },
+         { 'error' => { 'message' => 'Too Many Requests' }, 'status' => 'failure' }]
+      end
+      expect { @instance.list_incidents }
+        .to raise_error(Legion::Extensions::ServiceNow::Errors::RateLimitError)
+    end
+  end
 end

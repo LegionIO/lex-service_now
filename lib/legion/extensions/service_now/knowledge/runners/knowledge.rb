@@ -11,12 +11,12 @@ module Legion
             def list_articles(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/sn_km_api/knowledge', params)
+              resp = get('/api/sn_km_api/knowledge', params, **)
               { articles: resp.body['result'] }
             end
 
             def get_article(sys_id:, **)
-              resp = connection(**).get("/api/sn_km_api/knowledge/#{sys_id}")
+              resp = get("/api/sn_km_api/knowledge/#{sys_id}", {}, **)
               { article: resp.body['result'] }
             end
 
@@ -24,7 +24,7 @@ module Legion
               body = { short_description: short_description }
               body[:text]           = text if text
               body[:knowledge_base] = knowledge_base if knowledge_base
-              resp = connection(**).post('/api/sn_km_api/knowledge', body)
+              resp = post('/api/sn_km_api/knowledge', body, **)
               { article: resp.body['result'] }
             end
 
@@ -32,12 +32,12 @@ module Legion
               body = {}
               body[:short_description] = short_description if short_description
               body[:text]              = text if text
-              resp = connection(**).patch("/api/sn_km_api/knowledge/#{sys_id}", body)
+              resp = patch("/api/sn_km_api/knowledge/#{sys_id}", body, **)
               { article: resp.body['result'] }
             end
 
             def delete_article(sys_id:, **)
-              resp = connection(**).delete("/api/sn_km_api/knowledge/#{sys_id}")
+              resp = delete("/api/sn_km_api/knowledge/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

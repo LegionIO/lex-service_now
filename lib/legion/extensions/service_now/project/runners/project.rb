@@ -11,12 +11,12 @@ module Legion
             def list_projects(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/pm_project', params)
+              resp = get('/api/now/table/pm_project', params, **)
               { projects: resp.body['result'] }
             end
 
             def get_project(sys_id:, **)
-              resp = connection(**).get("/api/now/table/pm_project/#{sys_id}")
+              resp = get("/api/now/table/pm_project/#{sys_id}", {}, **)
               { project: resp.body['result'] }
             end
 
@@ -28,7 +28,7 @@ module Legion
               body[:start_date]        = start_date if start_date
               body[:end_date]          = end_date if end_date
               body[:state]             = state if state
-              resp = connection(**).post('/api/now/table/pm_project', body)
+              resp = post('/api/now/table/pm_project', body, **)
               { project: resp.body['result'] }
             end
 
@@ -39,12 +39,12 @@ module Legion
               body[:state]            = state if state
               body[:percent_complete] = percent_complete if percent_complete
               body[:manager]          = manager if manager
-              resp = connection(**).patch("/api/now/table/pm_project/#{sys_id}", body)
+              resp = patch("/api/now/table/pm_project/#{sys_id}", body, **)
               { project: resp.body['result'] }
             end
 
             def delete_project(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/pm_project/#{sys_id}")
+              resp = delete("/api/now/table/pm_project/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 
@@ -53,7 +53,7 @@ module Legion
                 sysparm_query: "parent=#{project_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/pm_project_task', params)
+              resp = get('/api/now/table/pm_project_task', params, **)
               { project_tasks: resp.body['result'] }
             end
 

@@ -11,12 +11,12 @@ module Legion
             def list_releases(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/rm_release', params)
+              resp = get('/api/now/table/rm_release', params, **)
               { releases: resp.body['result'] }
             end
 
             def get_release(sys_id:, **)
-              resp = connection(**).get("/api/now/table/rm_release/#{sys_id}")
+              resp = get("/api/now/table/rm_release/#{sys_id}", {}, **)
               { release: resp.body['result'] }
             end
 
@@ -27,7 +27,7 @@ module Legion
               body[:state]             = state if state
               body[:planned_start]     = planned_start if planned_start
               body[:planned_end]       = planned_end if planned_end
-              resp = connection(**).post('/api/now/table/rm_release', body)
+              resp = post('/api/now/table/rm_release', body, **)
               { release: resp.body['result'] }
             end
 
@@ -35,12 +35,12 @@ module Legion
               body = {}
               body[:name]  = name if name
               body[:state] = state if state
-              resp = connection(**).patch("/api/now/table/rm_release/#{sys_id}", body)
+              resp = patch("/api/now/table/rm_release/#{sys_id}", body, **)
               { release: resp.body['result'] }
             end
 
             def delete_release(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/rm_release/#{sys_id}")
+              resp = delete("/api/now/table/rm_release/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

@@ -13,12 +13,12 @@ module Legion
                 sysparm_query: "cat_item=#{cat_item_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/item_option_new', params)
+              resp = get('/api/now/table/item_option_new', params, **)
               { variables: resp.body['result'] }
             end
 
             def get_catalog_variable(sys_id:, **)
-              resp = connection(**).get("/api/now/table/item_option_new/#{sys_id}")
+              resp = get("/api/now/table/item_option_new/#{sys_id}", {}, **)
               { variable: resp.body['result'] }
             end
 
@@ -31,7 +31,7 @@ module Legion
                 type:          type,
                 mandatory:     mandatory
               }
-              resp = connection(**).post('/api/now/table/item_option_new', body)
+              resp = post('/api/now/table/item_option_new', body, **)
               { variable: resp.body['result'] }
             end
 
@@ -41,12 +41,12 @@ module Legion
               body[:question_text] = question_text if question_text
               body[:mandatory]     = mandatory unless mandatory.nil?
               body[:active]        = active unless active.nil?
-              resp = connection(**).patch("/api/now/table/item_option_new/#{sys_id}", body)
+              resp = patch("/api/now/table/item_option_new/#{sys_id}", body, **)
               { variable: resp.body['result'] }
             end
 
             def delete_catalog_variable(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/item_option_new/#{sys_id}")
+              resp = delete("/api/now/table/item_option_new/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

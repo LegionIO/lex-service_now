@@ -10,12 +10,12 @@ module Legion
               include Legion::Extensions::ServiceNow::Helpers::Client
 
               def get_hierarchy(**)
-                resp = connection(**).get('/api/now/doc/meta/hierarchy')
+                resp = get('/api/now/doc/meta/hierarchy', {}, **)
                 { hierarchy: resp.body['result'] }
               end
 
               def get_class_meta(class_name:, **)
-                resp = connection(**).get("/api/now/doc/meta/#{class_name}")
+                resp = get("/api/now/doc/meta/#{class_name}", {}, **)
                 { meta: resp.body['result'] }
               end
 

@@ -11,12 +11,12 @@ module Legion
             def list_update_sets(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sys_update_set', params)
+              resp = get('/api/now/table/sys_update_set', params, **)
               { update_sets: resp.body['result'] }
             end
 
             def get_update_set(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sys_update_set/#{sys_id}")
+              resp = get("/api/now/table/sys_update_set/#{sys_id}", {}, **)
               { update_set: resp.body['result'] }
             end
 
@@ -24,7 +24,7 @@ module Legion
               body = { name: name }
               body[:description]  = description if description
               body[:release_date] = release_date if release_date
-              resp = connection(**).post('/api/now/table/sys_update_set', body)
+              resp = post('/api/now/table/sys_update_set', body, **)
               { update_set: resp.body['result'] }
             end
 
@@ -33,12 +33,12 @@ module Legion
               body[:name]        = name if name
               body[:state]       = state if state
               body[:description] = description if description
-              resp = connection(**).patch("/api/now/table/sys_update_set/#{sys_id}", body)
+              resp = patch("/api/now/table/sys_update_set/#{sys_id}", body, **)
               { update_set: resp.body['result'] }
             end
 
             def delete_update_set(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/sys_update_set/#{sys_id}")
+              resp = delete("/api/now/table/sys_update_set/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 
@@ -47,7 +47,7 @@ module Legion
                 sysparm_query: "update_set=#{update_set_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/sys_update_xml', params)
+              resp = get('/api/now/table/sys_update_xml', params, **)
               { changes: resp.body['result'] }
             end
 

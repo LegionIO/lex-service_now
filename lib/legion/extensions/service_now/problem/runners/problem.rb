@@ -13,14 +13,14 @@ module Legion
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query]  = sysparm_query if sysparm_query
               params[:sysparm_fields] = sysparm_fields if sysparm_fields
-              resp = connection(**).get('/api/now/table/problem', params)
+              resp = get('/api/now/table/problem', params, **)
               { problems: resp.body['result'] }
             end
 
             def get_problem(sys_id:, sysparm_fields: nil, **)
               params = {}
               params[:sysparm_fields] = sysparm_fields if sysparm_fields
-              resp = connection(**).get("/api/now/table/problem/#{sys_id}", params)
+              resp = get("/api/now/table/problem/#{sys_id}", params, **)
               { problem: resp.body['result'] }
             end
 
@@ -32,7 +32,7 @@ module Legion
               body[:description]      = description if description
               body[:category]         = category if category
               body[:subcategory]      = subcategory if subcategory
-              resp = connection(**).post('/api/now/table/problem', body)
+              resp = post('/api/now/table/problem', body, **)
               { problem: resp.body['result'] }
             end
 
@@ -47,19 +47,19 @@ module Legion
               body[:fix_notes]         = fix_notes if fix_notes
               body[:assignment_group]  = assignment_group if assignment_group
               body[:assigned_to]       = assigned_to if assigned_to
-              resp = connection(**).patch("/api/now/table/problem/#{sys_id}", body)
+              resp = patch("/api/now/table/problem/#{sys_id}", body, **)
               { problem: resp.body['result'] }
             end
 
             def close_problem(sys_id:, fix_notes:, cause_notes: nil, **)
               body = { state: '107', fix_notes: fix_notes }
               body[:cause_notes] = cause_notes if cause_notes
-              resp = connection(**).patch("/api/now/table/problem/#{sys_id}", body)
+              resp = patch("/api/now/table/problem/#{sys_id}", body, **)
               { problem: resp.body['result'] }
             end
 
             def delete_problem(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/problem/#{sys_id}")
+              resp = delete("/api/now/table/problem/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

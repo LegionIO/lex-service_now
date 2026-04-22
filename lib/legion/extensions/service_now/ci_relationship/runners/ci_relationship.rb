@@ -10,12 +10,12 @@ module Legion
 
             def list_relationship_types(sysparm_limit: 100, sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
-              resp = connection(**).get('/api/now/table/cmdb_rel_type', params)
+              resp = get('/api/now/table/cmdb_rel_type', params, **)
               { relationship_types: resp.body['result'] }
             end
 
             def get_relationship_type(sys_id:, **)
-              resp = connection(**).get("/api/now/table/cmdb_rel_type/#{sys_id}")
+              resp = get("/api/now/table/cmdb_rel_type/#{sys_id}", {}, **)
               { relationship_type: resp.body['result'] }
             end
 
@@ -27,18 +27,18 @@ module Legion
               query_parts << "child=#{child}" if child
               query_parts << sysparm_query if sysparm_query
               params[:sysparm_query] = query_parts.join('^') unless query_parts.empty?
-              resp = connection(**).get('/api/now/table/cmdb_rel_ci', params)
+              resp = get('/api/now/table/cmdb_rel_ci', params, **)
               { relationships: resp.body['result'] }
             end
 
             def create_ci_relationship(parent:, child:, type:, **)
               body = { parent: parent, child: child, type: type }
-              resp = connection(**).post('/api/now/table/cmdb_rel_ci', body)
+              resp = post('/api/now/table/cmdb_rel_ci', body, **)
               { relationship: resp.body['result'] }
             end
 
             def delete_ci_relationship(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/cmdb_rel_ci/#{sys_id}")
+              resp = delete("/api/now/table/cmdb_rel_ci/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

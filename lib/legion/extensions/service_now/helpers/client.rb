@@ -7,6 +7,8 @@ module Legion
     module ServiceNow
       module Helpers
         module Client
+          OAUTH_TOKEN_BUFFER_SECONDS = 60
+
           def connection(url: nil, client_id: nil, client_secret: nil,
                          token: nil, username: nil, password: nil, **)
             base_url = url || Legion::Settings[:service_now][:url]
@@ -25,6 +27,8 @@ module Legion
           end
 
           def fetch_oauth2_token(base_url, client_id, client_secret)
+            @fetch_oauth2_token = nil if @oauth_token_expires_at.nil? || ::Time.now.to_i >= @oauth_token_expires_at
+
             @fetch_oauth2_token ||= begin
               resp = Faraday.new(url: base_url) do |conn|
                 conn.request :url_encoded
@@ -35,6 +39,8 @@ module Legion
                          client_id:     client_id,
                          client_secret: client_secret
                        })
+              expires_in = resp.body['expires_in']&.to_i || 1800
+              @oauth_token_expires_at = ::Time.now.to_i + expires_in - OAUTH_TOKEN_BUFFER_SECONDS
               resp.body['access_token']
             end
           end
@@ -44,6 +50,7 @@ module Legion
             when 200, 201, 202, 204
               resp
             when 401
+              @fetch_oauth2_token = nil
               raise Errors::AuthenticationError.new(error_message(resp), status: 401, detail: resp.body)
             when 403
               raise Errors::AuthorizationError.new(error_message(resp), status: 403, detail: resp.body)
@@ -61,6 +68,22 @@ module Legion
           end
 
           private
+
+          def get(path, params = {}, **)
+            handle_response(connection(**).get(path, params))
+          end
+
+          def post(path, body = {}, **)
+            handle_response(connection(**).post(path, body))
+          end
+
+          def patch(path, body = {}, **)
+            handle_response(connection(**).patch(path, body))
+          end
+
+          def delete(path, **)
+            handle_response(connection(**).delete(path))
+          end
 
           def error_message(resp)
             body = resp.body

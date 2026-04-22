@@ -13,12 +13,12 @@ module Legion
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query]  = sysparm_query if sysparm_query
               params[:sysparm_fields] = sysparm_fields if sysparm_fields
-              resp = connection(**).get('/api/now/table/task', params)
+              resp = get('/api/now/table/task', params, **)
               { tasks: resp.body['result'] }
             end
 
             def get_task(sys_id:, **)
-              resp = connection(**).get("/api/now/table/task/#{sys_id}")
+              resp = get("/api/now/table/task/#{sys_id}", {}, **)
               { task: resp.body['result'] }
             end
 
@@ -30,19 +30,19 @@ module Legion
               body[:assignment_group]  = assignment_group if assignment_group
               body[:short_description] = short_description if short_description
               body[:work_notes]        = work_notes if work_notes
-              resp = connection(**).patch("/api/now/table/task/#{sys_id}", body)
+              resp = patch("/api/now/table/task/#{sys_id}", body, **)
               { task: resp.body['result'] }
             end
 
             def close_task(sys_id:, close_notes:, **)
               body = { state: '3', close_notes: close_notes }
-              resp = connection(**).patch("/api/now/table/task/#{sys_id}", body)
+              resp = patch("/api/now/table/task/#{sys_id}", body, **)
               { task: resp.body['result'] }
             end
 
             def add_work_note(sys_id:, work_notes:, **)
               body = { work_notes: work_notes }
-              resp = connection(**).patch("/api/now/table/task/#{sys_id}", body)
+              resp = patch("/api/now/table/task/#{sys_id}", body, **)
               { task: resp.body['result'] }
             end
 

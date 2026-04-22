@@ -12,12 +12,12 @@ module Legion
                                         sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/metric_definition', params)
+              resp = get('/api/now/table/metric_definition', params, **)
               { metric_definitions: resp.body['result'] }
             end
 
             def get_metric_definition(sys_id:, **)
-              resp = connection(**).get("/api/now/table/metric_definition/#{sys_id}")
+              resp = get("/api/now/table/metric_definition/#{sys_id}", {}, **)
               { metric_definition: resp.body['result'] }
             end
 
@@ -28,12 +28,12 @@ module Legion
               query_parts << "metric_definition=#{metric_sys_id}" if metric_sys_id
               query_parts << "table=#{table}" if table
               params[:sysparm_query] = query_parts.join('^') unless query_parts.empty?
-              resp = connection(**).get('/api/now/table/metric_instance', params)
+              resp = get('/api/now/table/metric_instance', params, **)
               { metric_instances: resp.body['result'] }
             end
 
             def get_metric_instance(sys_id:, **)
-              resp = connection(**).get("/api/now/table/metric_instance/#{sys_id}")
+              resp = get("/api/now/table/metric_instance/#{sys_id}", {}, **)
               { metric_instance: resp.body['result'] }
             end
 

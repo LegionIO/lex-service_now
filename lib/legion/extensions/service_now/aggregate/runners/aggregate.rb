@@ -21,7 +21,7 @@ module Legion
               params[:sysparm_query]       = sysparm_query if sysparm_query
               params[:sysparm_group_by]    = sysparm_group_by if sysparm_group_by
               params[:sysparm_having]      = sysparm_having if sysparm_having
-              resp = connection(**).get("/api/now/stats/#{table_name}", params)
+              resp = get("/api/now/stats/#{table_name}", params, **)
               { stats: resp.body['result'] }
             end
 

@@ -11,12 +11,12 @@ module Legion
             def list_departments(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/cmn_department', params)
+              resp = get('/api/now/table/cmn_department', params, **)
               { departments: resp.body['result'] }
             end
 
             def get_department(sys_id:, **)
-              resp = connection(**).get("/api/now/table/cmn_department/#{sys_id}")
+              resp = get("/api/now/table/cmn_department/#{sys_id}", {}, **)
               { department: resp.body['result'] }
             end
 
@@ -27,7 +27,7 @@ module Legion
               body[:parent]       = parent if parent
               body[:head_count]   = head_count if head_count
               body[:cost_center]  = cost_center if cost_center
-              resp = connection(**).post('/api/now/table/cmn_department', body)
+              resp = post('/api/now/table/cmn_department', body, **)
               { department: resp.body['result'] }
             end
 
@@ -37,12 +37,12 @@ module Legion
               body[:name]        = name if name
               body[:description] = description if description
               body[:head_count]  = head_count if head_count
-              resp = connection(**).patch("/api/now/table/cmn_department/#{sys_id}", body)
+              resp = patch("/api/now/table/cmn_department/#{sys_id}", body, **)
               { department: resp.body['result'] }
             end
 
             def delete_department(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/cmn_department/#{sys_id}")
+              resp = delete("/api/now/table/cmn_department/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

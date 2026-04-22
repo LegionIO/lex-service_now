@@ -14,17 +14,17 @@ module Legion
                                  sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = "table_name=#{table_name}^table_sys_id=#{table_sys_id}" if table_name && table_sys_id
-              resp = connection(**).get('/api/now/attachment', params)
+              resp = get('/api/now/attachment', params, **)
               { attachments: resp.body['result'] }
             end
 
             def get_attachment(sys_id:, **)
-              resp = connection(**).get("/api/now/attachment/#{sys_id}")
+              resp = get("/api/now/attachment/#{sys_id}", {}, **)
               { attachment: resp.body['result'] }
             end
 
             def get_attachment_file(sys_id:, **)
-              resp = connection(**).get("/api/now/attachment/#{sys_id}/file")
+              resp = get("/api/now/attachment/#{sys_id}/file", {}, **)
               { content: resp.body, status: resp.status }
             end
 
@@ -41,7 +41,7 @@ module Legion
             end
 
             def delete_attachment(sys_id:, **)
-              resp = connection(**).delete("/api/now/attachment/#{sys_id}")
+              resp = delete("/api/now/attachment/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

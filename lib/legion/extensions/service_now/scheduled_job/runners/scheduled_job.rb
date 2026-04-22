@@ -12,12 +12,12 @@ module Legion
                                     sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sysauto_script', params)
+              resp = get('/api/now/table/sysauto_script', params, **)
               { scheduled_jobs: resp.body['result'] }
             end
 
             def get_scheduled_job(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sysauto_script/#{sys_id}")
+              resp = get("/api/now/table/sysauto_script/#{sys_id}", {}, **)
               { scheduled_job: resp.body['result'] }
             end
 
@@ -25,7 +25,7 @@ module Legion
                                      run_period: nil, active: true, **)
               body = { name: name, script: script, run_type: run_type, active: active }
               body[:run_period] = run_period if run_period
-              resp = connection(**).post('/api/now/table/sysauto_script', body)
+              resp = post('/api/now/table/sysauto_script', body, **)
               { scheduled_job: resp.body['result'] }
             end
 
@@ -35,12 +35,12 @@ module Legion
               body[:script]     = script if script
               body[:active]     = active unless active.nil?
               body[:run_period] = run_period if run_period
-              resp = connection(**).patch("/api/now/table/sysauto_script/#{sys_id}", body)
+              resp = patch("/api/now/table/sysauto_script/#{sys_id}", body, **)
               { scheduled_job: resp.body['result'] }
             end
 
             def delete_scheduled_job(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/sysauto_script/#{sys_id}")
+              resp = delete("/api/now/table/sysauto_script/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

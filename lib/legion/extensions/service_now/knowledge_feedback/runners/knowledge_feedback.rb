@@ -12,26 +12,26 @@ module Legion
                                         article: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = "article=#{article}" if article
-              resp = connection(**).get('/api/now/table/kb_feedback', params)
+              resp = get('/api/now/table/kb_feedback', params, **)
               { feedback: resp.body['result'] }
             end
 
             def get_knowledge_feedback(sys_id:, **)
-              resp = connection(**).get("/api/now/table/kb_feedback/#{sys_id}")
+              resp = get("/api/now/table/kb_feedback/#{sys_id}", {}, **)
               { feedback: resp.body['result'] }
             end
 
             def create_knowledge_feedback(article:, rating:, comments: nil, **)
               body = { article: article, rating: rating }
               body[:comments] = comments if comments
-              resp = connection(**).post('/api/now/table/kb_feedback', body)
+              resp = post('/api/now/table/kb_feedback', body, **)
               { feedback: resp.body['result'] }
             end
 
             def list_knowledge_views(article: nil, sysparm_limit: 100, **)
               params = { sysparm_limit: sysparm_limit }
               params[:sysparm_query] = "article=#{article}" if article
-              resp = connection(**).get('/api/now/table/kb_view', params)
+              resp = get('/api/now/table/kb_view', params, **)
               { views: resp.body['result'] }
             end
 

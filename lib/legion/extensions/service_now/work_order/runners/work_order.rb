@@ -12,12 +12,12 @@ module Legion
                                  sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/wm_order', params)
+              resp = get('/api/now/table/wm_order', params, **)
               { work_orders: resp.body['result'] }
             end
 
             def get_work_order(sys_id:, **)
-              resp = connection(**).get("/api/now/table/wm_order/#{sys_id}")
+              resp = get("/api/now/table/wm_order/#{sys_id}", {}, **)
               { work_order: resp.body['result'] }
             end
 
@@ -27,7 +27,7 @@ module Legion
               body[:requested_by]     = requested_by if requested_by
               body[:assignment_group] = assignment_group if assignment_group
               body[:description]      = description if description
-              resp = connection(**).post('/api/now/table/wm_order', body)
+              resp = post('/api/now/table/wm_order', body, **)
               { work_order: resp.body['result'] }
             end
 
@@ -37,13 +37,13 @@ module Legion
               body[:state]       = state if state
               body[:assigned_to] = assigned_to if assigned_to
               body[:work_notes]  = work_notes if work_notes
-              resp = connection(**).patch("/api/now/table/wm_order/#{sys_id}", body)
+              resp = patch("/api/now/table/wm_order/#{sys_id}", body, **)
               { work_order: resp.body['result'] }
             end
 
             def close_work_order(sys_id:, close_notes:, **)
               body = { state: 'closed_complete', close_notes: close_notes }
-              resp = connection(**).patch("/api/now/table/wm_order/#{sys_id}", body)
+              resp = patch("/api/now/table/wm_order/#{sys_id}", body, **)
               { work_order: resp.body['result'] }
             end
 
@@ -52,7 +52,7 @@ module Legion
                 sysparm_query: "order=#{work_order_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/wm_task', params)
+              resp = get('/api/now/table/wm_task', params, **)
               { work_order_tasks: resp.body['result'] }
             end
 

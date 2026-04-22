@@ -11,12 +11,12 @@ module Legion
             def list_locations(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/cmn_location', params)
+              resp = get('/api/now/table/cmn_location', params, **)
               { locations: resp.body['result'] }
             end
 
             def get_location(sys_id:, **)
-              resp = connection(**).get("/api/now/table/cmn_location/#{sys_id}")
+              resp = get("/api/now/table/cmn_location/#{sys_id}", {}, **)
               { location: resp.body['result'] }
             end
 
@@ -29,7 +29,7 @@ module Legion
               body[:country] = country if country
               body[:zip]     = zip if zip
               body[:phone]   = phone if phone
-              resp = connection(**).post('/api/now/table/cmn_location', body)
+              resp = post('/api/now/table/cmn_location', body, **)
               { location: resp.body['result'] }
             end
 
@@ -40,12 +40,12 @@ module Legion
               body[:street]  = street if street
               body[:city]    = city if city
               body[:country] = country if country
-              resp = connection(**).patch("/api/now/table/cmn_location/#{sys_id}", body)
+              resp = patch("/api/now/table/cmn_location/#{sys_id}", body, **)
               { location: resp.body['result'] }
             end
 
             def delete_location(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/cmn_location/#{sys_id}")
+              resp = delete("/api/now/table/cmn_location/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

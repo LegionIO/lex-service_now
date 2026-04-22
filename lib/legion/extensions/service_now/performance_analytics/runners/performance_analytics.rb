@@ -11,13 +11,13 @@ module Legion
             def get_widget_data(widget_sys_id:, sysparm_uuid: nil, **)
               params = {}
               params[:sysparm_uuid] = sysparm_uuid if sysparm_uuid
-              resp = connection(**).get("/api/now/pa/widgets/#{widget_sys_id}", params)
+              resp = get("/api/now/pa/widgets/#{widget_sys_id}", params, **)
               { widget: resp.body['result'] }
             end
 
             def list_widgets(sysparm_limit: 100, sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
-              resp = connection(**).get('/api/now/pa/widgets', params)
+              resp = get('/api/now/pa/widgets', params, **)
               { widgets: resp.body['result'] }
             end
 
@@ -26,18 +26,18 @@ module Legion
               params = { sysparm_include_scores: sysparm_include_scores,
                          sysparm_per_page:       sysparm_per_page }
               params[:sysparm_breakdown] = sysparm_breakdown if sysparm_breakdown
-              resp = connection(**).get("/api/now/pa/scorecards/#{indicator_sys_id}", params)
+              resp = get("/api/now/pa/scorecards/#{indicator_sys_id}", params, **)
               { scorecard: resp.body['result'] }
             end
 
             def list_indicators(sysparm_limit: 100, sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
-              resp = connection(**).get('/api/now/pa/indicators', params)
+              resp = get('/api/now/pa/indicators', params, **)
               { indicators: resp.body['result'] }
             end
 
             def list_breakdowns(**)
-              resp = connection(**).get('/api/now/pa/breakdowns')
+              resp = get('/api/now/pa/breakdowns', {}, **)
               { breakdowns: resp.body['result'] }
             end
 

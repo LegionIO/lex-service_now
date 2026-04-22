@@ -12,12 +12,12 @@ module Legion
                                sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/wf_workflow', params)
+              resp = get('/api/now/table/wf_workflow', params, **)
               { workflows: resp.body['result'] }
             end
 
             def get_workflow(sys_id:, **)
-              resp = connection(**).get("/api/now/table/wf_workflow/#{sys_id}")
+              resp = get("/api/now/table/wf_workflow/#{sys_id}", {}, **)
               { workflow: resp.body['result'] }
             end
 
@@ -25,12 +25,12 @@ module Legion
                                        sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/wf_context', params)
+              resp = get('/api/now/table/wf_context', params, **)
               { contexts: resp.body['result'] }
             end
 
             def get_workflow_context(sys_id:, **)
-              resp = connection(**).get("/api/now/table/wf_context/#{sys_id}")
+              resp = get("/api/now/table/wf_context/#{sys_id}", {}, **)
               { context: resp.body['result'] }
             end
 
@@ -39,13 +39,13 @@ module Legion
                 sysparm_query: "table_name=#{table}^id=#{sys_id}",
                 sysparm_limit: 100
               }
-              resp = connection(**).get('/api/now/table/wf_context', params)
+              resp = get('/api/now/table/wf_context', params, **)
               { contexts: resp.body['result'] }
             end
 
             def cancel_workflow_context(sys_id:, **)
               body = { state: 'cancelled' }
-              resp = connection(**).patch("/api/now/table/wf_context/#{sys_id}", body)
+              resp = patch("/api/now/table/wf_context/#{sys_id}", body, **)
               { context: resp.body['result'] }
             end
 

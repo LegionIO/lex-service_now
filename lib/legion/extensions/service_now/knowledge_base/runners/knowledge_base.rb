@@ -12,12 +12,12 @@ module Legion
                                      sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/kb_knowledge_base', params)
+              resp = get('/api/now/table/kb_knowledge_base', params, **)
               { knowledge_bases: resp.body['result'] }
             end
 
             def get_knowledge_base(sys_id:, **)
-              resp = connection(**).get("/api/now/table/kb_knowledge_base/#{sys_id}")
+              resp = get("/api/now/table/kb_knowledge_base/#{sys_id}", {}, **)
               { knowledge_base: resp.body['result'] }
             end
 
@@ -26,7 +26,7 @@ module Legion
               body = { title: title, active: active }
               body[:description] = description if description
               body[:owner]       = owner if owner
-              resp = connection(**).post('/api/now/table/kb_knowledge_base', body)
+              resp = post('/api/now/table/kb_knowledge_base', body, **)
               { knowledge_base: resp.body['result'] }
             end
 
@@ -36,12 +36,12 @@ module Legion
               body[:title]       = title if title
               body[:description] = description if description
               body[:active]      = active unless active.nil?
-              resp = connection(**).patch("/api/now/table/kb_knowledge_base/#{sys_id}", body)
+              resp = patch("/api/now/table/kb_knowledge_base/#{sys_id}", body, **)
               { knowledge_base: resp.body['result'] }
             end
 
             def delete_knowledge_base(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/kb_knowledge_base/#{sys_id}")
+              resp = delete("/api/now/table/kb_knowledge_base/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 
@@ -50,7 +50,7 @@ module Legion
                 sysparm_query: "kb_knowledge_base=#{knowledge_base_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/kb_category', params)
+              resp = get('/api/now/table/kb_category', params, **)
               { categories: resp.body['result'] }
             end
 

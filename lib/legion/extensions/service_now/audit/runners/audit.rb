@@ -17,12 +17,12 @@ module Legion
               elsif sysparm_query
                 params[:sysparm_query] = sysparm_query
               end
-              resp = connection(**).get('/api/now/table/sys_audit', params)
+              resp = get('/api/now/table/sys_audit', params, **)
               { audit_records: resp.body['result'] }
             end
 
             def get_audit_record(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sys_audit/#{sys_id}")
+              resp = get("/api/now/table/sys_audit/#{sys_id}", {}, **)
               { audit_record: resp.body['result'] }
             end
 
@@ -31,7 +31,7 @@ module Legion
               query = "tablename=#{tablename}^documentkey=#{documentkey}"
               query += "^fieldname=#{fieldname}" if fieldname
               params = { sysparm_query: query, sysparm_limit: sysparm_limit }
-              resp = connection(**).get('/api/now/table/sys_audit', params)
+              resp = get('/api/now/table/sys_audit', params, **)
               { field_changes: resp.body['result'] }
             end
 

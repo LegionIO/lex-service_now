@@ -14,19 +14,19 @@ module Legion
               body[:resource]    = resource if resource
               body[:node]        = node if node
               body[:description] = description if description
-              resp = connection(**).post('/api/now/table/sysevent', body)
+              resp = post('/api/now/table/sysevent', body, **)
               { event: resp.body['result'] }
             end
 
             def list_events(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sysevent', params)
+              resp = get('/api/now/table/sysevent', params, **)
               { events: resp.body['result'] }
             end
 
             def get_event(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sysevent/#{sys_id}")
+              resp = get("/api/now/table/sysevent/#{sys_id}", {}, **)
               { event: resp.body['result'] }
             end
 

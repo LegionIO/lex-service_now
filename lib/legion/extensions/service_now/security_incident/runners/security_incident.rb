@@ -12,12 +12,12 @@ module Legion
                                         sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sn_si_incident', params)
+              resp = get('/api/now/table/sn_si_incident', params, **)
               { security_incidents: resp.body['result'] }
             end
 
             def get_security_incident(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sn_si_incident/#{sys_id}")
+              resp = get("/api/now/table/sn_si_incident/#{sys_id}", {}, **)
               { security_incident: resp.body['result'] }
             end
 
@@ -28,7 +28,7 @@ module Legion
               body[:category]         = category if category
               body[:subcategory]      = subcategory if subcategory
               body[:assignment_group] = assignment_group if assignment_group
-              resp = connection(**).post('/api/now/table/sn_si_incident', body)
+              resp = post('/api/now/table/sn_si_incident', body, **)
               { security_incident: resp.body['result'] }
             end
 
@@ -38,13 +38,13 @@ module Legion
               body[:state]       = state if state
               body[:severity]    = severity if severity
               body[:assigned_to] = assigned_to if assigned_to
-              resp = connection(**).patch("/api/now/table/sn_si_incident/#{sys_id}", body)
+              resp = patch("/api/now/table/sn_si_incident/#{sys_id}", body, **)
               { security_incident: resp.body['result'] }
             end
 
             def close_security_incident(sys_id:, close_notes:, **)
               body = { state: 'closed', close_notes: close_notes }
-              resp = connection(**).patch("/api/now/table/sn_si_incident/#{sys_id}", body)
+              resp = patch("/api/now/table/sn_si_incident/#{sys_id}", body, **)
               { security_incident: resp.body['result'] }
             end
 

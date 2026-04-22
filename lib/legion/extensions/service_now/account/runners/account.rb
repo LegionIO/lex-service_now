@@ -11,12 +11,12 @@ module Legion
             def list_accounts(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/account', params)
+              resp = get('/api/now/account', params, **)
               { accounts: resp.body['result'] }
             end
 
             def get_account(sys_id:, **)
-              resp = connection(**).get("/api/now/account/#{sys_id}")
+              resp = get("/api/now/account/#{sys_id}", {}, **)
               { account: resp.body['result'] }
             end
 
@@ -24,7 +24,7 @@ module Legion
               body = { name: name }
               body[:phone] = phone if phone
               body[:email] = email if email
-              resp = connection(**).post('/api/now/account', body)
+              resp = post('/api/now/account', body, **)
               { account: resp.body['result'] }
             end
 
@@ -33,7 +33,7 @@ module Legion
               body[:name]  = name if name
               body[:phone] = phone if phone
               body[:email] = email if email
-              resp = connection(**).patch("/api/now/account/#{sys_id}", body)
+              resp = patch("/api/now/account/#{sys_id}", body, **)
               { account: resp.body['result'] }
             end
 

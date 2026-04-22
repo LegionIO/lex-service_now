@@ -12,12 +12,12 @@ module Legion
                           sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sys_security_acl', params)
+              resp = get('/api/now/table/sys_security_acl', params, **)
               { acls: resp.body['result'] }
             end
 
             def get_acl(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sys_security_acl/#{sys_id}")
+              resp = get("/api/now/table/sys_security_acl/#{sys_id}", {}, **)
               { acl: resp.body['result'] }
             end
 
@@ -26,7 +26,7 @@ module Legion
               body = { name: name, type: type, operation: operation, active: active }
               body[:script]    = script if script
               body[:condition] = condition if condition
-              resp = connection(**).post('/api/now/table/sys_security_acl', body)
+              resp = post('/api/now/table/sys_security_acl', body, **)
               { acl: resp.body['result'] }
             end
 
@@ -35,12 +35,12 @@ module Legion
               body[:active]    = active unless active.nil?
               body[:script]    = script if script
               body[:condition] = condition if condition
-              resp = connection(**).patch("/api/now/table/sys_security_acl/#{sys_id}", body)
+              resp = patch("/api/now/table/sys_security_acl/#{sys_id}", body, **)
               { acl: resp.body['result'] }
             end
 
             def delete_acl(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/sys_security_acl/#{sys_id}")
+              resp = delete("/api/now/table/sys_security_acl/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

@@ -11,18 +11,18 @@ module Legion
             def list_groups(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sys_user_group', params)
+              resp = get('/api/now/table/sys_user_group', params, **)
               { groups: resp.body['result'] }
             end
 
             def get_group(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sys_user_group/#{sys_id}")
+              resp = get("/api/now/table/sys_user_group/#{sys_id}", {}, **)
               { group: resp.body['result'] }
             end
 
             def get_group_by_name(name:, **)
               params = { sysparm_query: "name=#{name}", sysparm_limit: 1 }
-              resp = connection(**).get('/api/now/table/sys_user_group', params)
+              resp = get('/api/now/table/sys_user_group', params, **)
               { group: resp.body['result']&.first }
             end
 
@@ -31,7 +31,7 @@ module Legion
               body[:description] = description if description
               body[:manager]     = manager if manager
               body[:email]       = email if email
-              resp = connection(**).post('/api/now/table/sys_user_group', body)
+              resp = post('/api/now/table/sys_user_group', body, **)
               { group: resp.body['result'] }
             end
 
@@ -40,12 +40,12 @@ module Legion
               body[:name]        = name if name
               body[:description] = description if description
               body[:manager]     = manager if manager
-              resp = connection(**).patch("/api/now/table/sys_user_group/#{sys_id}", body)
+              resp = patch("/api/now/table/sys_user_group/#{sys_id}", body, **)
               { group: resp.body['result'] }
             end
 
             def delete_group(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/sys_user_group/#{sys_id}")
+              resp = delete("/api/now/table/sys_user_group/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 
@@ -54,18 +54,18 @@ module Legion
                 sysparm_query: "group=#{group_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/sys_user_grmember', params)
+              resp = get('/api/now/table/sys_user_grmember', params, **)
               { members: resp.body['result'] }
             end
 
             def add_group_member(group_sys_id:, user_sys_id:, **)
               body = { group: group_sys_id, user: user_sys_id }
-              resp = connection(**).post('/api/now/table/sys_user_grmember', body)
+              resp = post('/api/now/table/sys_user_grmember', body, **)
               { member: resp.body['result'] }
             end
 
             def remove_group_member(membership_sys_id:, **)
-              resp = connection(**).delete("/api/now/table/sys_user_grmember/#{membership_sys_id}")
+              resp = delete("/api/now/table/sys_user_grmember/#{membership_sys_id}", **)
               { deleted: resp.status == 204, sys_id: membership_sys_id }
             end
 

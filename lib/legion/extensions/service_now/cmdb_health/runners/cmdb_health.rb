@@ -10,12 +10,12 @@ module Legion
 
             def list_health_rules(sysparm_limit: 100, sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
-              resp = connection(**).get('/api/now/table/sa_m2m_suggested_relationship', params)
+              resp = get('/api/now/table/sa_m2m_suggested_relationship', params, **)
               { health_rules: resp.body['result'] }
             end
 
             def get_cmdb_health_dashboard(**)
-              resp = connection(**).get('/api/now/cmdb/health_dashboard')
+              resp = get('/api/now/cmdb/health_dashboard', {}, **)
               { dashboard: resp.body['result'] }
             end
 
@@ -24,7 +24,7 @@ module Legion
                 sysparm_query: "sys_class_name=#{class_name}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/cmdb_duplicate', params)
+              resp = get('/api/now/table/cmdb_duplicate', params, **)
               { duplicates: resp.body['result'] }
             end
 
@@ -34,7 +34,7 @@ module Legion
                 sysparm_query: "sys_class_name=#{class_name}^last_discovered<#{cutoff}",
                 sysparm_limit: 100
               }
-              resp = connection(**).get('/api/now/table/cmdb_ci', params)
+              resp = get('/api/now/table/cmdb_ci', params, **)
               { stale_cis: resp.body['result'] }
             end
 

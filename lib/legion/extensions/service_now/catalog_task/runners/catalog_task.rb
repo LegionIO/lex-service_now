@@ -16,12 +16,12 @@ module Legion
               elsif sysparm_query
                 params[:sysparm_query] = sysparm_query
               end
-              resp = connection(**).get('/api/now/table/sc_task', params)
+              resp = get('/api/now/table/sc_task', params, **)
               { catalog_tasks: resp.body['result'] }
             end
 
             def get_catalog_task(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sc_task/#{sys_id}")
+              resp = get("/api/now/table/sc_task/#{sys_id}", {}, **)
               { catalog_task: resp.body['result'] }
             end
 
@@ -31,13 +31,13 @@ module Legion
               body[:state]       = state if state
               body[:assigned_to] = assigned_to if assigned_to
               body[:work_notes]  = work_notes if work_notes
-              resp = connection(**).patch("/api/now/table/sc_task/#{sys_id}", body)
+              resp = patch("/api/now/table/sc_task/#{sys_id}", body, **)
               { catalog_task: resp.body['result'] }
             end
 
             def close_catalog_task(sys_id:, close_notes:, **)
               body = { state: '3', close_notes: close_notes }
-              resp = connection(**).patch("/api/now/table/sc_task/#{sys_id}", body)
+              resp = patch("/api/now/table/sc_task/#{sys_id}", body, **)
               { catalog_task: resp.body['result'] }
             end
 

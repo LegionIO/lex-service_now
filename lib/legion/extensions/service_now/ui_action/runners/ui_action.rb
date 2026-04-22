@@ -12,12 +12,12 @@ module Legion
                                 sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sys_ui_action', params)
+              resp = get('/api/now/table/sys_ui_action', params, **)
               { ui_actions: resp.body['result'] }
             end
 
             def get_ui_action(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sys_ui_action/#{sys_id}")
+              resp = get("/api/now/table/sys_ui_action/#{sys_id}", {}, **)
               { ui_action: resp.body['result'] }
             end
 
@@ -25,7 +25,7 @@ module Legion
                                  active: true, **)
               body = { name: name, table: table, script: script,
                        action_type: action_type, active: active }
-              resp = connection(**).post('/api/now/table/sys_ui_action', body)
+              resp = post('/api/now/table/sys_ui_action', body, **)
               { ui_action: resp.body['result'] }
             end
 
@@ -34,12 +34,12 @@ module Legion
               body[:script] = script if script
               body[:active] = active unless active.nil?
               body[:name]   = name if name
-              resp = connection(**).patch("/api/now/table/sys_ui_action/#{sys_id}", body)
+              resp = patch("/api/now/table/sys_ui_action/#{sys_id}", body, **)
               { ui_action: resp.body['result'] }
             end
 
             def delete_ui_action(sys_id:, **)
-              resp = connection(**).delete("/api/now/table/sys_ui_action/#{sys_id}")
+              resp = delete("/api/now/table/sys_ui_action/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

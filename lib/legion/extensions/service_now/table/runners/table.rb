@@ -16,7 +16,7 @@ module Legion
               params[:sysparm_fields]                  = sysparm_fields if sysparm_fields
               params[:sysparm_display_value]           = sysparm_display_value unless sysparm_display_value.nil?
               params[:sysparm_exclude_reference_link]  = sysparm_exclude_reference_link unless sysparm_exclude_reference_link.nil?
-              resp = connection(**).get("/api/now/table/#{table_name}", params)
+              resp = get("/api/now/table/#{table_name}", params, **)
               { records: resp.body['result'] }
             end
 
@@ -25,7 +25,7 @@ module Legion
               params = {}
               params[:sysparm_fields]        = sysparm_fields if sysparm_fields
               params[:sysparm_display_value] = sysparm_display_value unless sysparm_display_value.nil?
-              resp = connection(**).get("/api/now/table/#{table_name}/#{sys_id}", params)
+              resp = get("/api/now/table/#{table_name}/#{sys_id}", params, **)
               { record: resp.body['result'] }
             end
 
@@ -42,7 +42,7 @@ module Legion
             end
 
             def table_delete(table_name:, sys_id:, **)
-              resp = connection(**).delete("/api/now/table/#{table_name}/#{sys_id}")
+              resp = delete("/api/now/table/#{table_name}/#{sys_id}", **)
               { deleted: resp.status == 204, sys_id: sys_id }
             end
 

@@ -10,12 +10,12 @@ module Legion
 
             def list_currencies(sysparm_limit: 100, sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
-              resp = connection(**).get('/api/now/table/fx_currency', params)
+              resp = get('/api/now/table/fx_currency', params, **)
               { currencies: resp.body['result'] }
             end
 
             def get_currency(sys_id:, **)
-              resp = connection(**).get("/api/now/table/fx_currency/#{sys_id}")
+              resp = get("/api/now/table/fx_currency/#{sys_id}", {}, **)
               { currency: resp.body['result'] }
             end
 
@@ -26,7 +26,7 @@ module Legion
               query_parts << "from_cur=#{from_currency}" if from_currency
               query_parts << "to_cur=#{to_currency}" if to_currency
               params[:sysparm_query] = query_parts.join('^') unless query_parts.empty?
-              resp = connection(**).get('/api/now/table/fx_rate', params)
+              resp = get('/api/now/table/fx_rate', params, **)
               { exchange_rates: resp.body['result'] }
             end
 

@@ -13,12 +13,12 @@ module Legion
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query]  = sysparm_query if sysparm_query
               params[:sysparm_fields] = sysparm_fields if sysparm_fields
-              resp = connection(**).get('/api/now/table/sc_request', params)
+              resp = get('/api/now/table/sc_request', params, **)
               { requests: resp.body['result'] }
             end
 
             def get_request(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sc_request/#{sys_id}")
+              resp = get("/api/now/table/sc_request/#{sys_id}", {}, **)
               { request: resp.body['result'] }
             end
 
@@ -27,19 +27,19 @@ module Legion
               body[:state]                = state if state
               body[:stage]                = stage if stage
               body[:special_instructions] = special_instructions if special_instructions
-              resp = connection(**).patch("/api/now/table/sc_request/#{sys_id}", body)
+              resp = patch("/api/now/table/sc_request/#{sys_id}", body, **)
               { request: resp.body['result'] }
             end
 
             def list_request_items(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sc_req_item', params)
+              resp = get('/api/now/table/sc_req_item', params, **)
               { request_items: resp.body['result'] }
             end
 
             def get_request_item(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sc_req_item/#{sys_id}")
+              resp = get("/api/now/table/sc_req_item/#{sys_id}", {}, **)
               { request_item: resp.body['result'] }
             end
 
@@ -48,7 +48,7 @@ module Legion
               body[:state]       = state if state
               body[:stage]       = stage if stage
               body[:assigned_to] = assigned_to if assigned_to
-              resp = connection(**).patch("/api/now/table/sc_req_item/#{sys_id}", body)
+              resp = patch("/api/now/table/sc_req_item/#{sys_id}", body, **)
               { request_item: resp.body['result'] }
             end
 

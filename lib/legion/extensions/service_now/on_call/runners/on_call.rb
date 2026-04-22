@@ -12,12 +12,12 @@ module Legion
                                        sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/cmn_rota', params)
+              resp = get('/api/now/table/cmn_rota', params, **)
               { schedules: resp.body['result'] }
             end
 
             def get_on_call_schedule(sys_id:, **)
-              resp = connection(**).get("/api/now/table/cmn_rota/#{sys_id}")
+              resp = get("/api/now/table/cmn_rota/#{sys_id}", {}, **)
               { schedule: resp.body['result'] }
             end
 
@@ -26,19 +26,19 @@ module Legion
                 sysparm_query: "rota=#{rota_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/cmn_rota_member', params)
+              resp = get('/api/now/table/cmn_rota_member', params, **)
               { members: resp.body['result'] }
             end
 
             def get_current_on_call(group_sys_id:, **)
               params = { sysparm_query: "group=#{group_sys_id}", sysparm_limit: 1 }
-              resp = connection(**).get('/api/now/on_call_rota/whoisoncall', params)
+              resp = get('/api/now/on_call_rota/whoisoncall', params, **)
               { on_call: resp.body['result'] }
             end
 
             def list_escalation_policies(sysparm_limit: 100, sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
-              resp = connection(**).get('/api/now/table/cmn_rota_escalation', params)
+              resp = get('/api/now/table/cmn_rota_escalation', params, **)
               { escalation_policies: resp.body['result'] }
             end
 

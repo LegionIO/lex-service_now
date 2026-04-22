@@ -11,12 +11,12 @@ module Legion
             def list_surveys(sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/survey', params)
+              resp = get('/api/now/table/survey', params, **)
               { surveys: resp.body['result'] }
             end
 
             def get_survey(sys_id:, **)
-              resp = connection(**).get("/api/now/table/survey/#{sys_id}")
+              resp = get("/api/now/table/survey/#{sys_id}", {}, **)
               { survey: resp.body['result'] }
             end
 
@@ -24,12 +24,12 @@ module Legion
                                       sysparm_offset: 0, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = "survey=#{survey_sys_id}" if survey_sys_id
-              resp = connection(**).get('/api/now/table/asmt_assessment_instance', params)
+              resp = get('/api/now/table/asmt_assessment_instance', params, **)
               { survey_instances: resp.body['result'] }
             end
 
             def get_survey_instance(sys_id:, **)
-              resp = connection(**).get("/api/now/table/asmt_assessment_instance/#{sys_id}")
+              resp = get("/api/now/table/asmt_assessment_instance/#{sys_id}", {}, **)
               { survey_instance: resp.body['result'] }
             end
 
@@ -38,7 +38,7 @@ module Legion
                 sysparm_query: "instance=#{instance_sys_id}",
                 sysparm_limit: sysparm_limit
               }
-              resp = connection(**).get('/api/now/table/asmt_assessment_instance_question', params)
+              resp = get('/api/now/table/asmt_assessment_instance_question', params, **)
               { responses: resp.body['result'] }
             end
 

@@ -12,7 +12,7 @@ module Legion
               def list_cis(class_name:, sysparm_limit: 100, sysparm_offset: 0, sysparm_query: nil, **)
                 params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
                 params[:sysparm_query] = sysparm_query if sysparm_query
-                resp = connection(**).get("/api/now/cmdb/instance/#{class_name}", params)
+                resp = get("/api/now/cmdb/instance/#{class_name}", params, **)
                 { records: resp.body['result']['records'] }
               end
 
@@ -21,12 +21,12 @@ module Legion
                 body[:name]       = name if name
                 body[:ip_address] = ip_address if ip_address
                 body[:os]         = os if os
-                resp = connection(**).post("/api/now/cmdb/instance/#{class_name}", body)
+                resp = post("/api/now/cmdb/instance/#{class_name}", body, **)
                 { record: resp.body['result']['record'] }
               end
 
               def get_ci(class_name:, sys_id:, **)
-                resp = connection(**).get("/api/now/cmdb/instance/#{class_name}/#{sys_id}")
+                resp = get("/api/now/cmdb/instance/#{class_name}/#{sys_id}", {}, **)
                 { record: resp.body['result']['record'] }
               end
 
@@ -36,23 +36,23 @@ module Legion
                 body[:ip_address] = ip_address if ip_address
                 body[:os]         = os if os
                 body[:location]   = location if location
-                resp = connection(**).patch("/api/now/cmdb/instance/#{class_name}/#{sys_id}", body)
+                resp = patch("/api/now/cmdb/instance/#{class_name}/#{sys_id}", body, **)
                 { record: resp.body['result']['record'] }
               end
 
               def delete_ci(class_name:, sys_id:, **)
-                resp = connection(**).delete("/api/now/cmdb/instance/#{class_name}/#{sys_id}")
+                resp = delete("/api/now/cmdb/instance/#{class_name}/#{sys_id}", **)
                 { deleted: resp.status == 204, sys_id: sys_id }
               end
 
               def get_relationships(class_name:, sys_id:, **)
-                resp = connection(**).get("/api/now/cmdb/instance/#{class_name}/#{sys_id}/relationships")
+                resp = get("/api/now/cmdb/instance/#{class_name}/#{sys_id}/relationships", {}, **)
                 { relationships: resp.body['result'] }
               end
 
               def create_relationship(class_name:, sys_id:, target_id:, relationship_type:, **)
                 body = { target_id: target_id, relationship_type: relationship_type }
-                resp = connection(**).post("/api/now/cmdb/instance/#{class_name}/#{sys_id}/relationships", body)
+                resp = post("/api/now/cmdb/instance/#{class_name}/#{sys_id}/relationships", body, **)
                 { relationship: resp.body['result'] }
               end
 

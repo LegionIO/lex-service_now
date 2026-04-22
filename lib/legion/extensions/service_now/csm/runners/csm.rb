@@ -12,12 +12,12 @@ module Legion
                                sysparm_query: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = sysparm_query if sysparm_query
-              resp = connection(**).get('/api/now/table/sn_customerservice_case', params)
+              resp = get('/api/now/table/sn_customerservice_case', params, **)
               { cases: resp.body['result'] }
             end
 
             def get_csm_case(sys_id:, **)
-              resp = connection(**).get("/api/now/table/sn_customerservice_case/#{sys_id}")
+              resp = get("/api/now/table/sn_customerservice_case/#{sys_id}", {}, **)
               { csm_case: resp.body['result'] }
             end
 
@@ -27,7 +27,7 @@ module Legion
               body[:account]     = account if account
               body[:contact]     = contact if contact
               body[:description] = description if description
-              resp = connection(**).post('/api/now/table/sn_customerservice_case', body)
+              resp = post('/api/now/table/sn_customerservice_case', body, **)
               { csm_case: resp.body['result'] }
             end
 
@@ -37,7 +37,7 @@ module Legion
               body[:state]            = state if state
               body[:assigned_to]      = assigned_to if assigned_to
               body[:resolution_notes] = resolution_notes if resolution_notes
-              resp = connection(**).patch("/api/now/table/sn_customerservice_case/#{sys_id}", body)
+              resp = patch("/api/now/table/sn_customerservice_case/#{sys_id}", body, **)
               { csm_case: resp.body['result'] }
             end
 
@@ -45,12 +45,12 @@ module Legion
                               account: nil, **)
               params = { sysparm_limit: sysparm_limit, sysparm_offset: sysparm_offset }
               params[:sysparm_query] = "account=#{account}" if account
-              resp = connection(**).get('/api/now/table/customer_contact', params)
+              resp = get('/api/now/table/customer_contact', params, **)
               { contacts: resp.body['result'] }
             end
 
             def get_contact(sys_id:, **)
-              resp = connection(**).get("/api/now/table/customer_contact/#{sys_id}")
+              resp = get("/api/now/table/customer_contact/#{sys_id}", {}, **)
               { contact: resp.body['result'] }
             end
 
