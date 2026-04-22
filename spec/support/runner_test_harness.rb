@@ -18,7 +18,7 @@ module RunnerTestHarness
       end
     end
     klass.new(
-      url: 'https://test.service-now.com',
+      url:      'https://test.service-now.com',
       username: 'admin',
       password: 'secret'
     )
