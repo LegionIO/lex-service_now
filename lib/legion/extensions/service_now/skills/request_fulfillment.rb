@@ -11,12 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'RITM', 'request item', 'fulfillment', 'REQ', 'service request fulfillment'
 
-          steps :review_request,
-                :assign_fulfiller,
-                :fulfill_request,
-                :confirm_completion,
-                :complete
-
           def review_request(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Reviewing service request details and variables.',
@@ -53,6 +47,12 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :review_request,
+                :assign_fulfiller,
+                :fulfill_request,
+                :confirm_completion,
+                :complete
         end
       end
     end

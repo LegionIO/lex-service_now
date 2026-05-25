@@ -11,12 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'SIR', 'security incident', 'breach', 'phishing', 'malware', 'threat', 'vulnerability'
 
-          steps :triage_security_incident,
-                :contain_threat,
-                :investigate,
-                :remediate,
-                :complete
-
           def triage_security_incident(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Triaging security incident: severity, affected systems, initial indicators.',
@@ -53,6 +47,12 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :triage_security_incident,
+                :contain_threat,
+                :investigate,
+                :remediate,
+                :complete
         end
       end
     end

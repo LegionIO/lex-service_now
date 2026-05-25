@@ -11,11 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'KB', 'knowledge base', 'knowledge article', 'how to', 'documentation search'
 
-          steps :gather_search_terms,
-                :search_articles,
-                :present_results,
-                :complete
-
           def gather_search_terms(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'What are you looking for in the knowledge base?',
@@ -44,6 +39,11 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :gather_search_terms,
+                :search_articles,
+                :present_results,
+                :complete
         end
       end
     end

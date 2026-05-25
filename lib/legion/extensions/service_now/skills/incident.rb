@@ -11,12 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'incident', 'INC', 'outage', 'p1', 'sev1', 'production down', 'service down'
 
-          steps :gather_context,
-                :assess_severity,
-                :determine_action,
-                :confirm_with_user,
-                :complete
-
           def gather_context(context: {})
             Legion::LLM::Skills::StepResult.new(
               inject:   "Gathering incident context from ServiceNow. Project: #{detect_project(context)}",
@@ -52,6 +46,12 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :gather_context,
+                :assess_severity,
+                :determine_action,
+                :confirm_with_user,
+                :complete
         end
       end
     end

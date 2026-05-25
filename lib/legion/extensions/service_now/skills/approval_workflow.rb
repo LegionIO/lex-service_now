@@ -11,11 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'approval', 'approve', 'reject', 'pending approval', 'awaiting approval'
 
-          steps :gather_approval_details,
-                :assess_request,
-                :make_decision,
-                :complete
-
           def gather_approval_details(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Gathering pending approval details and associated record.',
@@ -44,6 +39,11 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :gather_approval_details,
+                :assess_request,
+                :make_decision,
+                :complete
         end
       end
     end

@@ -11,12 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'CHG', 'RFC', 'change request', 'CAB', 'change advisory board', 'change management'
 
-          steps :gather_requirements,
-                :risk_assessment,
-                :draft_and_review,
-                :submit_for_approval,
-                :complete
-
           def gather_requirements(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Gathering change requirements: scope, timeline, and affected systems.',
@@ -52,6 +46,12 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :gather_requirements,
+                :risk_assessment,
+                :draft_and_review,
+                :submit_for_approval,
+                :complete
         end
       end
     end
