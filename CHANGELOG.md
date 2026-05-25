@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1] - 2026-05-25
+
+### Fixed
+- Skills: move `steps` DSL declaration after method definitions in all 10 skills to fix
+  `InvalidSkill` error on load (`validate_steps!` requires methods to be defined first)
+
 ## [0.3.0] - 2026-04-22
 
 ### Added
