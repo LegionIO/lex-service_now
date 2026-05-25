@@ -11,12 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'catalog', 'service request', 'order', 'request item', 'service catalog'
 
-          steps :browse_catalog,
-                :select_item,
-                :configure_request,
-                :submit_order,
-                :complete
-
           def browse_catalog(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Browsing ServiceNow service catalog.',
@@ -53,6 +47,12 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :browse_catalog,
+                :select_item,
+                :configure_request,
+                :submit_order,
+                :complete
         end
       end
     end

@@ -11,11 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'asset', 'hardware', 'inventory', 'ALM', 'asset lifecycle', 'serial number'
 
-          steps :identify_asset,
-                :review_asset_details,
-                :update_asset_state,
-                :complete
-
           def identify_asset(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Identifying asset by serial number, tag, or CI record.',
@@ -45,6 +40,11 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :identify_asset,
+                :review_asset_details,
+                :update_asset_state,
+                :complete
         end
       end
     end

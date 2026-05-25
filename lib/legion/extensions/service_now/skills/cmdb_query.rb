@@ -11,11 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'CMDB', 'CI', 'configuration item', 'asset', 'cmdb_ci', 'server lookup'
 
-          steps :clarify_query,
-                :scope_search,
-                :present_results,
-                :complete
-
           def clarify_query(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Clarifying CMDB query: what CI class and attributes are you looking for?',
@@ -44,6 +39,11 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :clarify_query,
+                :scope_search,
+                :present_results,
+                :complete
         end
       end
     end

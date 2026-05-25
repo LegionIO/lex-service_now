@@ -11,12 +11,6 @@ module Legion
           trigger :on_demand
           trigger_words 'PRB', 'problem', 'root cause', 'RCA', 'known error', 'workaround', 'recurring incident'
 
-          steps :identify_problem,
-                :investigate_root_cause,
-                :document_workaround,
-                :implement_fix,
-                :complete
-
           def identify_problem(context: {}) # rubocop:disable Lint/UnusedMethodArgument
             Legion::LLM::Skills::StepResult.new(
               inject:   'Identifying the problem record and linking related incidents.',
@@ -53,6 +47,12 @@ module Legion
               metadata: { step: 'complete' }
             )
           end
+
+          steps :identify_problem,
+                :investigate_root_cause,
+                :document_workaround,
+                :implement_fix,
+                :complete
         end
       end
     end
